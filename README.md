@@ -349,12 +349,10 @@ $ curl -X DELETE
 
 
 ------------------------------------------
-Endpoint de registro de usuario
+
+Endpoint descargar CSV .
+
 > Request
-$ curl -X DELETE 
+$ curl -X POST 
 -H "Authorization: Token <Toquen asociado al usuario>" 
--d '' http://localhost:8000/api/v1/deletebill/<id>
-
-http://localhost:8000/rest-auth/registration/
-
-----------------------------------------------------------
+-d '' http://localhost:8000/api/v1/getdatacsv/
