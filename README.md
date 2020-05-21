@@ -1,5 +1,5 @@
 # Instrucciones de instalación:
-1. Validamos que la máquina tenga instalado Python 2. Este proyecto se desarrolló en Python 2.7.18.
+1. Validamos que la máquina tenga instalado Python 3.8.2.
 2. Instalar modulo virtualenv de Python:
 	`pip install virtualenv`
 3. Creamos un ambiente virtual para instalar las dependencias del proyecto. 
