@@ -39,4 +39,8 @@ urlpatterns = [
     path('api/v1/addbill/', add_bill),
     path('api/v1/updatebill/<int:bill_id>', update_bill),
     path('api/v1/deletebill/<int:bill_id>', delete_bill),
+    #----  Get CSV ----------
+    path('api/v1/getdatacsv/', get_data_on_csv),
+
+    
 ]

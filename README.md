@@ -40,44 +40,107 @@
   pip install django-rest-auth django-allauth
 
 ----------------------------------------------------------
+#EndPoints
+
+<<------------------------------------------------------------------------>>
+Para registar un usuario se debe envíar por POST a la dirreción
+Direeción :http://localhost:8000/rest-auth/registration/
+EndPoint: 
+{
+    "username": "dgarciam",
+    "email": "dgarcia@uninorte.edu.co",
+    "password1": "jorge123.",
+    "password2": "jorge123."
+} 
+
+Respuesta:
+  key: <Token generado para autenticación>
+Este token se usará para iniciar sesión en la API. 
+
+<<------------------------------------------------------------------------>>
+Para iniciar sesión se debe enviar
+EnfPoint : http://localhost:8000/rest-auth/login/
+{
+    "username": "dgarciam",
+    "password": "jorge123.",
+}
+Respuesta:La respuesta nos entrega el Token asignado al usuario. 
+Con este podemos acceder a la API
+{
+    "key": "<Token generado>"
+}
+<<------------------------------------------------------------------------>>
+Para Cerrar sesión se debe enviar por medio de POST el Token , por medio del parámetro 'Authorization=Token <Token generado>'
+EnfPoint : http://localhost:8000/rest-auth/logout/ 
+
+Respuesta: 
+{
+    "detail": "Sesión cerrada con éxito."
+}
+<<------------------------------------------------------------------------>>
 --------------------------------------------------------------------
 Leer todos los productos
 > Request
-$ curl -X GET -H "Authorization: Token 9992e37dcee4368da3f720b510d1bc9ed0f64fca" 
+$ curl -X GET -H "Authorization: Token <Token generado para el usuario>" 
 -d '' 
-localhost:8000/api/getbooks
+http://localhost:8000/api/v1/getproducts/
 
 > Response
-{"books": [
-      {
-        "id": 1, 
-        "title": "CRUD Django", 
-        "description": "Walkthrough for CRUD in DJANGO", 
-        "author": 1, 
-        "added_by": 2, 
-        "created_date": "2020-02-29T21:07:27.968463Z"
-       }
+{
+    "products": [
+        {
+            "id": 1,
+            "name": "Vive100",
+            "description": "muy bueno",
+            "attribute1": "100Hg",
+            "attribute2": "ds",
+            "attribute3": "ds",
+            "attribute4": "sd"
+        },
+        {
+            "id": 2,
+            "name": "Saviloe",
+            "description": "muy bueno",
+            "attribute1": "100Hg",
+            "attribute2": "ds",
+            "attribute3": "ds",
+            "attribute4": "sd"
+        },
+        {
+            "id": 3,
+            "name": "Saviloeddd",
+            "description": "muy bueno",
+            "attribute1": "100Hg",
+            "attribute2": "ds",
+            "attribute3": "ds",
+            "attribute4": "sd"
+        }
     ]
- }  
-
+}
 ---------------------------------------------------
+Agregar un nuevo producto
 > Request
 $ curl -X POST 
--H "Authorization: Token 1565c60a136420bc733b10c4a165e07698014acb" 
+-H "Authorization: Token <Token generado para el usuario>" 
 -d '{
-"title":"CRUD Django",
- "description":"Walkthrough for CRUD in DJANGO",
- "author": 1}' 
-localhost:8000/api/addbook 
+	"name" : "Saviloe",
+    	"description" : "muy bueno",
+    	"attribute1" : "100Hg",
+    	"attribute2" : "ds",
+     	"attribute3" : "ds",
+    	"attribute4" : "sd"
+}' 
+localhost:8000/api/v1/addproduct/ 
 
 > Response
    {"book": {
        "id": 1, 
-       "title": "CRUD Django", 
-       "description": "Walkthrough for CRUD in DJANGO", 
-       "author": 1, 
-       "added_by": 2, 
-       "created_date": "2020-02-29T21:07:27.968463Z"
+	"name" : "Saviloe",
+    	"description" : "muy bueno",
+    	"attribute1" : "100Hg",
+    	"attribute2" : "ds",
+     	"attribute3" : "ds",
+    	"attribute4" : "sd"
      }
    }
 ----------------------------------------------------
@@ -86,22 +149,27 @@ Actualizar un producto
 $ curl -X PUT 
 -H "Authorization: Token <Toquen asociado al usuario>" 
 -d '{
-"title":"CRUD Django Updated V2", 
-"description":"Walkthrough for CRUD in DJANGO", 
-"author": 1
+       "id": 1, 
+	"name" : "Saviloe",
+    	"description" : "muy bueno",
+    	"attribute1" : "100Hg",
+    	"attribute2" : "ds",
+     	"attribute3" : "ds",
+    	"attribute4" : "sd"
 }' 
 
-localhost:8000/api/updatebook/1
+http://localhost:8000/api/v1/updateproduct/<id>
 
 > Response
 
 {"book": {
-    "id": 1, 
-    "title": "CRUD Django Updated V2", 
-    "description": "Walkthrough for CRUD in DJANGO", 
-    "author": 1, 
-    "added_by": 2, 
-    "created_date": "2020-02-29T21:07:27.968463Z"
+       "id": 1, 
+	"name" : "Saviloe",
+    	"description" : "muy bueno",
+    	"attribute1" : "100Hg",
+    	"attribute2" : "ds",
+     	"attribute3" : "ds",
+    	"attribute4" : "sd"
   }
 }
 ----------------------------------------------------
@@ -109,5 +177,184 @@ Eliminar un producto
 
 > Request
 $ curl -X DELETE 
--H "Authorization: Token 9992e37dcee4368da3f720b510d1bc9ed0f64fca" 
--d '' localhost:8000/api/deletebook/1
+-H "Authorization: Token <Toquen asociado al usuario>" 
+-d '' http://localhost:8000/api/v1/deleteproduct/<id>
+
+-------------------------------------------------------------------
+--------------------------------------------------------------------
+Leer todos  los clientes
+> Request
+$ curl -X GET -H "Authorization: Token <Token generado para el usuario>" 
+-d '' 
+http://localhost:8000/api/v1/getclients/
+
+> Response
+{
+    "clients": [
+        {
+            	"id": 1,
+   		"document" : "1143144920",
+    		"first_name" : "Jorge2",
+    		"last_name" : "Silva2",
+    		"email" : "j@u2.com"
+        },
+    ]
+}
+---------------------------------------------------
+Agregar un nuevo cliente
+> Request
+$ curl -X POST 
+-H "Authorization: Token <Token generado para el usuario>" 
+-d '{
+   "document" : "1143144920",
+    "first_name" : "Jorge2",
+    "last_name" : "Silva2",
+    "email" : "j@u2.com"
+}' 
+localhost:8000/api/v1/addclient/ 
+
+> Response
+   {"client": {
+       "id": 1, 
+   "document" : "1143144920",
+    "first_name" : "Jorge2",
+    "last_name" : "Silva2",
+    "email" : "j@u2.com"
+     }
+   }
+----------------------------------------------------
+Actualizar un cliente
+> Request
+$ curl -X PUT 
+-H "Authorization: Token <Toquen asociado al usuario>" 
+-d '{
+     "id": 1, 
+   "document" : "1143144920",
+    "first_name" : "Jorge2",
+    "last_name" : "Silva2",
+    "email" : "j@u2.com"
+}' 
+
+http://localhost:8000/api/v1/updateclient/<id>
+
+> Response
+
+{"client": {
+    "id": 1, 
+   "document" : "1143144920",
+    "first_name" : "Jorge2",
+    "last_name" : "Silva2",
+    "email" : "j@u2.com"
+  }
+}
+----------------------------------------------------
+Eliminar un cliente
+
+> Request
+$ curl -X DELETE 
+-H "Authorization: Token <Toquen asociado al usuario>" 
+-d '' http://localhost:8000/api/v1/deletecliente/<id>
+
+-----------------------------------------------------------
+--------------------------------------------------------------------
+Leer todos  los facturas
+> Request
+$ curl -X GET -H "Authorization: Token <Token generado para el usuario>" 
+-d '' 
+http://localhost:8000/api/v1/getbills/
+
+> Response
+{
+    "bills": [
+        {
+	"name" : "Smart",
+    	"client_id" : "1",
+   	 "company_name" : "La mejor",
+    	"nit" : "31321654654",
+     	"code" : "13213213213",
+    	"product" : 1
+        },
+    ]
+}
+---------------------------------------------------
+Agregar una nueva factura
+> Request
+$ curl -X POST 
+-H "Authorization: Token <Token generado para el usuario>" 
+-d '{
+	"name" : "Smart",
+    	"client_id" : 4,
+   	 "company_name" : "La mejor",
+    	"nit" : "31321654654",
+     	"code" : "13213213213",
+    	"product" : 2
+}' 
+localhost:8000/api/v1/addbill/ 
+
+> Response
+{
+    "bill": {
+        "id": 25,
+        "name": "Smart",
+        "client_id": 4,
+        "company_name": "La mejor",
+        "nit": "31321654654",
+        "code": "13213213213",
+        "product": [
+            2
+        ]
+    }
+}
+----------------------------------------------------
+Actualizar una factura
+> Request
+$ curl -X PUT 
+-H "Authorization: Token <Toquen asociado al usuario>" 
+-d '{
+        "id": 25,
+        "name": "Smart",
+        "client_id": 4,
+        "company_name": "La mejor",
+        "nit": "31321654654",
+        "code": "13213213213",
+        "product": [
+            2
+        ]
+}' 
+
+http://localhost:8000/api/v1/updatebill/<id>
+
+> Response
+
+{"client": {
+        "id": 25,
+        "name": "Smart",
+        "client_id": 4,
+        "company_name": "La mejor",
+        "nit": "31321654654",
+        "code": "13213213213",
+        "product": [
+            2
+        ]
+  }
+}
+
+----------------------------------------------------
+Eliminar una factura
+
+> Request
+$ curl -X DELETE 
+-H "Authorization: Token <Toquen asociado al usuario>" 
+-d '' http://localhost:8000/api/v1/deletebill/<id>
+
+
+------------------------------------------
+Endpoint de registro de usuario
+> Request
+$ curl -X DELETE 
+-H "Authorization: Token <Toquen asociado al usuario>" 
+-d '' http://localhost:8000/api/v1/deletebill/<id>
+
+http://localhost:8000/rest-auth/registration/
+
+----------------------------------------------------------

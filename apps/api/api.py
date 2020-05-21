@@ -9,6 +9,9 @@ from apps.bill.models import Bills
 from rest_framework import status
 import json
 from django.core.exceptions import ObjectDoesNotExist
+import csv
+from django.http import HttpResponse
+
 #API clientes
 
 @api_view(["GET"])
@@ -197,6 +200,26 @@ def delete_bill(request, bill_id):
         bill = Bills.objects.get(id=bill_id)
         bill.delete()
         return Response(status=status.HTTP_200_OK)
+    except ObjectDoesNotExist as e:
+        return JsonResponse({'bill': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
+    except Exception:
+        return JsonResponse({'error': 'deleted'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(["GET"])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def get_data_on_csv(request):
+    try:
+        clients = Clients.objects.all()
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="NumBillsPerCli.csv"'
+        writer = csv.writer(response)
+        for client in clients:
+            bs = len (Bills.objects.filter(client_id = client))
+            writer.writerow([client.document, client.first_name + ' ' + client.last_name, bs])
+
+        return response
     except ObjectDoesNotExist as e:
         return JsonResponse({'bill': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
     except Exception:
