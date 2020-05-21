@@ -18,72 +18,60 @@
 9. Procedemosa utilizar la aplicación. Estará disponible en la URL:
   http://localhost:8000/
 
-----
+# EndPoints
 
-1. 
-  https://tutorial.djangogirls.org/es/django_start_project/
-  https://www.django-rest-framework.org/api-guide/authentication/
-  https://www.django-rest-framework.org/tutorial/4-authentication-and-permissions/
+## Registro de usuario
 
-  Crear el proyecto:
-  python -m pip install --upgrade pip
-  pip install -r requirements.txt
-  django-admin startproject Smart_Quick_Server .
-  Creo la carpeta apps para agrupar las aplicaciones propias y dentro de ella el archivo __init__.py para que sea reconocida
-  python manage.py makemigrations
-  python manage.py migrate
-  Instalamos Django djangorestframework
-  pip install djangorestframework
-  pip install markdown       # Markdown support for the browsable API.
-  pip install django-filter  # Filtering support
-  django-admin startapp api
-  pip install django-rest-auth django-allauth
-
-----------------------------------------------------------
-#EndPoints
-
-<<------------------------------------------------------------------------>>
 Para registar un usuario se debe envíar por POST a la dirreción
-Direeción :http://localhost:8000/rest-auth/registration/
-EndPoint: 
-{
+> Request $ curl -X POST -d '{
     "username": "dgarciam",
     "email": "dgarcia@uninorte.edu.co",
     "password1": "jorge123.",
     "password2": "jorge123."
-} 
+} ' http://localhost:8000/rest-auth/registration/
 
-Respuesta:
-  key: <Token generado para autenticación>
+> Response { key: <Token generado para autenticación> }
+  
 Este token se usará para iniciar sesión en la API. 
 
-<<------------------------------------------------------------------------>>
-Para iniciar sesión se debe enviar
-EnfPoint : http://localhost:8000/rest-auth/login/
-{
+------------------------------------------------------------------------
+## Iniciar sesión 
+
+> Request $ curl -X POST -d '{
     "username": "dgarciam",
     "password": "jorge123.",
-}
-Respuesta:La respuesta nos entrega el Token asignado al usuario. 
-Con este podemos acceder a la API
-{
+} ' http://localhost:8000/rest-auth/login/
+
+La respuesta nos entrega el Token asignado al usuario. 
+Con este podemos interactiar con la API, el token debe enviarse en la cabecera
+
+> Response {
     "key": "<Token generado>"
 }
-<<------------------------------------------------------------------------>>
+	
+------------------------------------------------------------------------
+## Cerrar sesión
+
 Para Cerrar sesión se debe enviar por medio de POST el Token , por medio del parámetro 'Authorization=Token <Token generado>'
 EnfPoint : http://localhost:8000/rest-auth/logout/ 
 
-Respuesta: 
-{
+> Request $ curl -X POST -H "Authorization: Token <Token generado para el usuario>" 
+-d '{   "name" : "Saviloe",
+    	"description" : "muy bueno",
+    	"attribute1" : "100Hg",
+    	"attribute2" : "ds",
+     	"attribute3" : "ds",
+    	"attribute4" : "sd"
+}' localhost:8000/api/v1/addproduct/ 
+
+> Response {
     "detail": "Sesión cerrada con éxito."
 }
-<<------------------------------------------------------------------------>>
---------------------------------------------------------------------
-Leer todos los productos
+------------------------------------------------------------------------
+## Leer todos los productos
 > Request
 $ curl -X GET -H "Authorization: Token <Token generado para el usuario>" 
--d '' 
-http://localhost:8000/api/v1/getproducts/
+-d '' http://localhost:8000/api/v1/getproducts/
 
 > Response
 {
@@ -117,8 +105,9 @@ http://localhost:8000/api/v1/getproducts/
         }
     ]
 }
----------------------------------------------------
-Agregar un nuevo producto
+------------------------------------------------------------------------
+## Agregar un nuevo producto
+
 > Request
 $ curl -X POST 
 -H "Authorization: Token <Token generado para el usuario>" 
@@ -143,8 +132,9 @@ localhost:8000/api/v1/addproduct/
     	"attribute4" : "sd"
      }
    }
-----------------------------------------------------
-Actualizar un producto 
+
+## Actualizar un producto 
+
 > Request
 $ curl -X PUT 
 -H "Authorization: Token <Toquen asociado al usuario>" 
@@ -172,17 +162,16 @@ http://localhost:8000/api/v1/updateproduct/<id>
     	"attribute4" : "sd"
   }
 }
-----------------------------------------------------
-Eliminar un producto
+
+## Eliminar un producto
 
 > Request
 $ curl -X DELETE 
 -H "Authorization: Token <Toquen asociado al usuario>" 
 -d '' http://localhost:8000/api/v1/deleteproduct/<id>
 
--------------------------------------------------------------------
---------------------------------------------------------------------
-Leer todos  los clientes
+## Leer todos  los clientes
+
 > Request
 $ curl -X GET -H "Authorization: Token <Token generado para el usuario>" 
 -d '' 
@@ -200,8 +189,8 @@ http://localhost:8000/api/v1/getclients/
         },
     ]
 }
----------------------------------------------------
-Agregar un nuevo cliente
+## Agregar un nuevo cliente
+
 > Request
 $ curl -X POST 
 -H "Authorization: Token <Token generado para el usuario>" 
@@ -222,8 +211,9 @@ localhost:8000/api/v1/addclient/
     "email" : "j@u2.com"
      }
    }
-----------------------------------------------------
-Actualizar un cliente
+
+## Actualizar un cliente
+
 > Request
 $ curl -X PUT 
 -H "Authorization: Token <Toquen asociado al usuario>" 
@@ -233,13 +223,9 @@ $ curl -X PUT
     "first_name" : "Jorge2",
     "last_name" : "Silva2",
     "email" : "j@u2.com"
-}' 
+}' http://localhost:8000/api/v1/updateclient/<id>
 
-http://localhost:8000/api/v1/updateclient/<id>
-
-> Response
-
-{"client": {
+> Response {"client": {
     "id": 1, 
    "document" : "1143144920",
     "first_name" : "Jorge2",
@@ -247,24 +233,21 @@ http://localhost:8000/api/v1/updateclient/<id>
     "email" : "j@u2.com"
   }
 }
-----------------------------------------------------
-Eliminar un cliente
+
+## Eliminar un cliente
 
 > Request
 $ curl -X DELETE 
 -H "Authorization: Token <Toquen asociado al usuario>" 
 -d '' http://localhost:8000/api/v1/deletecliente/<id>
 
------------------------------------------------------------
---------------------------------------------------------------------
-Leer todos  los facturas
+
+## Leer todos  los facturas
 > Request
 $ curl -X GET -H "Authorization: Token <Token generado para el usuario>" 
--d '' 
-http://localhost:8000/api/v1/getbills/
+-d '' http://localhost:8000/api/v1/getbills/
 
-> Response
-{
+> Response {
     "bills": [
         {
 	"name" : "Smart",
@@ -276,8 +259,9 @@ http://localhost:8000/api/v1/getbills/
         },
     ]
 }
----------------------------------------------------
-Agregar una nueva factura
+
+## Agregar una nueva factura
+
 > Request
 $ curl -X POST 
 -H "Authorization: Token <Token generado para el usuario>" 
@@ -288,8 +272,7 @@ $ curl -X POST
     	"nit" : "31321654654",
      	"code" : "13213213213",
     	"product" : 2
-}' 
-localhost:8000/api/v1/addbill/ 
+}'  localhost:8000/api/v1/addbill/ 
 
 > Response
 {
@@ -305,8 +288,8 @@ localhost:8000/api/v1/addbill/
         ]
     }
 }
-----------------------------------------------------
-Actualizar una factura
+
+## Actualizar una factura
 > Request
 $ curl -X PUT 
 -H "Authorization: Token <Toquen asociado al usuario>" 
@@ -320,9 +303,7 @@ $ curl -X PUT
         "product": [
             2
         ]
-}' 
-
-http://localhost:8000/api/v1/updatebill/<id>
+}' http://localhost:8000/api/v1/updatebill/<id>
 
 > Response
 
@@ -339,8 +320,7 @@ http://localhost:8000/api/v1/updatebill/<id>
   }
 }
 
-----------------------------------------------------
-Eliminar una factura
+## Eliminar una factura
 
 > Request
 $ curl -X DELETE 
@@ -348,9 +328,7 @@ $ curl -X DELETE
 -d '' http://localhost:8000/api/v1/deletebill/<id>
 
 
-------------------------------------------
-
-Endpoint descargar CSV .
+## Endpoint descargar CSV .
 
 > Request
 $ curl -X POST 
