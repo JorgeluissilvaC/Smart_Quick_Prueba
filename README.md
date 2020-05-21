@@ -7,7 +7,7 @@
 4. Activamos el entorno virtual, ingresamos dentro de la carpeta   <Nombre del entorno> y ejecutamos:
   `Scripts\activate`    
 5. Descargamos el repositorio de GitHub, con el siguiente comando (Validamos que la máquinatenga Git instalado):
-  `git clone https://github.com/JorgeluissilvaC/intellinext_books.git`
+  `git clone https://github.com/JorgeluissilvaC/Smart_Quick_Prueba.git`
 6. Entramos a la carpeta del repositorio e instalamos las dependencias, con el siguiente comando:
   `pip install -r requirements.txt`
 7. Realizamoslas migraciones necesarias a la base de datos. 
@@ -37,7 +37,7 @@ Este token se usará para iniciar sesión en la API.
 ------------------------------------------------------------------------
 ## Iniciar sesión 
 
-> Request $ curl -X POST -d '{
+> Request $ curl -X POST -H "Authorization: Token <Token generado para el usuario>" -d '{
     "username": "dgarciam",
     "password": "jorge123.",
 } ' http://localhost:8000/rest-auth/login/
